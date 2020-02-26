@@ -15,10 +15,11 @@ public class Parser {
 
     private TurtleModel myTurtleModel;
     public Parser (String commands ,String language, TurtleModel myTurtleModel) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, ClassNotFoundException, InstantiationException {
+        this.myTurtleModel = myTurtleModel;
         addPatterns(language);
         parseText(commands);
 
-        this.myTurtleModel = myTurtleModel;
+
     }
 
     private boolean validateMessage(){
