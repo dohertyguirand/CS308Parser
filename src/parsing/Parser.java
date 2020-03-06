@@ -7,6 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import execution.MultipleTurtlesCommand;
+import execution.MultipleTurtlesCommandFactory;
 import model.*;
 
 public class Parser {
@@ -15,6 +17,7 @@ public class Parser {
     private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     private List<Map.Entry<String, Pattern>> mySymbols;
     private CommandFactory factory = new CommandFactory();
+    private MultipleTurtlesCommandFactory multipleTurtlesCommandFactory = new MultipleTurtlesCommandFactory();
     private ResourceBundle resourceBundle;
 
     private String myLanguage;
@@ -29,17 +32,17 @@ public class Parser {
 
     // Loop mappings specifies how many sets of brackets each command type has
     // e.g., repeat 3 [ cmds ] has 1 set of brackets while dotimes [3] [ cmds ] has 2 sets of brackets
-    private static final Map<String, Integer> LOOP_MAPPINGS = new HashMap<String, Integer>() {{
-        put("repeat", 1);
-        put("dotimes", 2);
-        put("for", 2);
+    private static final Map<String, Integer> LOOP_MAPPINGS = new HashMap<String, Integer>() {
+        {
+            put("repeat", 1);
+            put("dotimes", 2);
+            put("for", 2);
 
-        put("if", 1);
-        put("ifelse", 2);
-        put("to", 2);
-        put("tell", 1);
-    }};
-
+            put("if", 1);
+            put("ifelse", 2);
+            put("to", 2);
+            put("tell", 1);
+        }};
 
     public Parser(String commands, String language,
                   VariableModel myVariableModel, ConsoleModel myConsoleModel,
@@ -120,26 +123,53 @@ public class Parser {
     private void parseDefaultMethod(TurtleModel currentTurtle, Stack<String> cmdStack,
         Stack<String> argStack)
         throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Command cmdToExecute = factory.getCommand(getSymbol(cmdStack.pop()));
+        String poppedCommand = cmdStack.pop();
         List<String> params = new ArrayList<>();
-        while (cmdToExecute.getNumParams() > params.size()) {
-            String popped = argStack.pop();
+        Double returnValue = 0.0;
+        if (LOOP_MAPPINGS.containsKey(poppedCommand)){
+            MultipleTurtlesCommand cmdToExecute = multipleTurtlesCommandFactory.getCommand(getSymbol(poppedCommand));
+            while (cmdToExecute.getNumParams() > params.size()) {
+                String popped = argStack.pop();
 
-            // check if the argument is a variable, and convert it to double if the command is not "MAKE"
-            if (!cmdToExecute.getClass().getSimpleName().equals("MakeVariable")
-                && popped.matches(":[a-zA-Z_]+")) {
-                popped = Double.toString(myVariableModel.getValue(popped));
+                // check if the argument is a variable, and convert it to double if the command is not "MAKE"
+                if (!cmdToExecute.getClass().getSimpleName().equals("MakeVariable")
+                        && popped.matches(":[a-zA-Z_]+")) {
+                    popped = Double.toString(myVariableModel.getValue(popped));
+                }
+
+                params.add(popped);
             }
+            Collections.reverse(params);
 
-            params.add(popped);
+            // EXECUTE THE COMMAND AND STORE THE RETURN VALUE IN INSTANCE VARIABLE AND ON ARGUMENT STACK
+            returnValue = cmdToExecute
+                    .execute(params, myVariableModel, myConsoleModel,
+                            myMethodModels, turtleModelContainer,currentTurtle );
+        }
+        else{
+            Command cmdToExecute = factory.getCommand(getSymbol(poppedCommand));
+            while (cmdToExecute.getNumParams() > params.size()) {
+                String popped = argStack.pop();
+
+                // check if the argument is a variable, and convert it to double if the command is not "MAKE"
+                if (!cmdToExecute.getClass().getSimpleName().equals("MakeVariable")
+                        && popped.matches(":[a-zA-Z_]+")) {
+                    popped = Double.toString(myVariableModel.getValue(popped));
+                }
+
+                params.add(popped);
+            }
+            Collections.reverse(params);
+
+            // EXECUTE THE COMMAND AND STORE THE RETURN VALUE IN INSTANCE VARIABLE AND ON ARGUMENT STACK
+            returnValue = cmdToExecute
+                    .execute(params, myVariableModel, myConsoleModel,
+                            myMethodModels, currentTurtle );
         }
 
-        Collections.reverse(params);
 
-        // EXECUTE THE COMMAND AND STORE THE RETURN VALUE IN INSTANCE VARIABLE AND ON ARGUMENT STACK
-        Double returnValue = cmdToExecute
-            .execute(params, myVariableModel, myConsoleModel,
-                myMethodModels, currentTurtle );
+
+
         this.lastReturnValue = returnValue;
         if (!cmdStack.isEmpty()) {
             argStack.push(returnValue.toString());
@@ -247,6 +277,9 @@ public class Parser {
         throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
         {
 //            System.out.println("Getting factory for symbol: "+ symbol);
+            if(LOOP_MAPPINGS.containsKey(symbol)){
+                return multipleTurtlesCommandFactory.getCommand(getSymbol(symbol)).getNumParams();
+            }
             return factory.getCommand(getSymbol(symbol)).getNumParams();
         }
 
