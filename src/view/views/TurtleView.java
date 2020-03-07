@@ -13,6 +13,7 @@ public class TurtleView extends Rectangle {
     private final int TURTLE_SIZE = 50;
     private final String IMAGE_RESOURCE_PATH = "src/resources/images/";
     private final String DEFAULT_IMAGE = "turtle1.png";
+    private final String INACTIVE_IMAGE = "largerinactive.png";
     private Image image;
     private ImagePattern turtlePattern;
     private int myId;
@@ -68,5 +69,11 @@ public class TurtleView extends Rectangle {
     }
     public void changeActive(boolean b){
         active = b;
+//        if(b == false){
+//            turtlePattern = new ImagePattern(new Image("file:" + IMAGE_RESOURCE_PATH + INACTIVE_IMAGE));
+//        }
+//        else{
+//            turtlePattern = new ImagePattern(new Image("file:" + IMAGE_RESOURCE_PATH + DEFAULT_IMAGE));
+//        }
     }
 }
