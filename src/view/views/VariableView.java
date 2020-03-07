@@ -1,10 +1,14 @@
 package view.views;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -51,13 +55,26 @@ public class VariableView extends InformationView {
             name.setOnMouseClicked(e->
                 handleTextPressed(name,"Variable"));
             val.setOnMouseClicked(e->handleTextPressed(val,"Value"));
+            variableNames.setOnMouseEntered(e-> variableNames.setStyle("-fx-border-color: pink;"));
+            variableNames.setOnMouseExited(e-> variableNames.setStyle("-fx-border-color: black;"));
+            variableVals.setOnMouseEntered(e-> variableVals.setStyle("-fx-border-color: pink;"));
+            variableVals.setOnMouseExited(e-> variableVals.setStyle("-fx-border-color: black;"));
             variableNames.getChildren().add(name);
             variableVals.getChildren().add(val);
-            createAndAddEntry(variableNames, variableVals);
+            String text = "set :" + varName + " " + varVal;
+            createAndAddEntry(variableNames, variableVals,text);
         }
     }
-    private void createAndAddEntry(Node names, Node vals) {
-        HBox entry = new HBox();
+    private void createAndAddEntry(Node names, Node vals, String text) {
+        HBox entry = new Library(text);
+        entry.setOnDragDetected(e-> {
+            Dragboard db = entry.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(((Library)entry).getText());
+            db.setContent(content);
+        });
+        entry.setOnMouseEntered(e-> entry.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY))));
+        entry.setOnMouseExited(e-> entry.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY))));
         entry.getChildren().add(names);
         entry.getChildren().add(vals);
         names.getStyleClass().add(STYLE);

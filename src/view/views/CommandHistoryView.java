@@ -1,5 +1,6 @@
 package view.views;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
@@ -48,12 +49,16 @@ public class CommandHistoryView extends InformationView {
     }
     private void createAndAddEntry(Node nums, Node in, Node out, String input) {
         HBox entry = new HBox();
+        entry.setOnMouseEntered(e-> entry.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY))));
         entry.setOnDragDetected(e->{
+            entry.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             Dragboard db = entry.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
             content.putString(input);
             db.setContent(content);
         });
+        entry.setOnDragDone(e-> entry.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY))));
+        entry.setOnMouseExited(e-> entry.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY))));
         entry.getStyleClass().add(STYLE);
         entry.getChildren().add(nums);
         entry.getChildren().add(in);

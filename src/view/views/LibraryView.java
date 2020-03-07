@@ -1,11 +1,12 @@
 package view.views;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -50,6 +51,8 @@ public class LibraryView extends InformationView {
             content.putString(((Library)entry).getText());
             db.setContent(content);
         });
+        entry.setOnMouseEntered(e-> entry.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY))));
+        entry.setOnMouseExited(e-> entry.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY))));
         entry.getChildren().add(names);
         entry.getChildren().add(bodies);
         entry.getStyleClass().add(STYLE);
