@@ -1,6 +1,9 @@
 package model;
 
 public class Variable {
+    /**
+     * this class is the variable object that holds has an index, name and value. The index is unique to each variable object to referecing a variable is independant of its name.
+     */
     private int myIndex;
     private String myName;
     private double myValue;

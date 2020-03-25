@@ -6,6 +6,8 @@ import model.*;
 
 /**
  * this is the interface for all of the Commands
+ * I think that this is well designed because it will be applicable to all of the commands. This is because the ModelContainer is passed into the execute method. The ModelContainer holds all
+ * of the models so any Command is able to maniuplate the data it needs to. Furthermore, creating a new model or command does not affect the any of the old commands.
  */
 
 public interface Command {

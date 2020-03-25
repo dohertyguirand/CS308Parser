@@ -3,7 +3,10 @@ package execution;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * this class creates the approriate command given the command name
+ * this class creates the appropriate command given the command name
+ * uses reflection
+ * I think that this is good design because it it has only one purpose: to create a new Command
+ * It is flexible in that there is only one factory for all of the commands
  */
 
 public class CommandFactory {
@@ -11,7 +14,6 @@ public class CommandFactory {
 
 
     /**
-     *
      * @param command - the command key that matches the name of a command class EXACTLY
      * @return - returns the appropriate command based on the given command name
      * @throws ClassNotFoundException

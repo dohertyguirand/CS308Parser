@@ -11,6 +11,7 @@ public class    VariableModel {
 
     /**
      * holds and manipulates all of the variable objects that stores the user created variables
+     * this model is able to keep track of variables even if the user changes its name or value
      */
 
     private HashMap<String, Double> myMap;

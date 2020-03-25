@@ -47,13 +47,7 @@ public class CommandHistoryView extends InformationView {
         lineNum ++;
     }
     private void createAndAddEntry(Node nums, Node in, Node out, String input) {
-        HBox entry = new HBox();
-        entry.setOnDragDetected(e->{
-            Dragboard db = entry.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(input);
-            db.setContent(content);
-        });
+        HBox entry = new Library(input);
         entry.getStyleClass().add(STYLE);
         entry.getChildren().add(nums);
         entry.getChildren().add(in);
