@@ -111,7 +111,6 @@ public class UserInterface {
         penColorSelector.updateLanguage(myResources.getString("ChoosePen"));
         backgroundColorSelector.updateLanguage(myResources.getString("ChooseBackground"));
         historyView.updateLanguage(myResources);
-
     }
     private void setFooter() {
         console.getChildren().add(commandPrompt.getPrompt());

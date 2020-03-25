@@ -1,11 +1,5 @@
 package view.util;
 
-import controller.Controller;
-
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -14,16 +8,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
-
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.*;
-
-import parsing.Parser;
-import view.views.*;
+import model.TurtleContainer;
+import view.views.ConsoleView;
 
 import javax.imageio.ImageIO;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 

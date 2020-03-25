@@ -20,6 +20,13 @@ public class LibraryView extends InformationView {
         setHeader();
 
     }
+
+    /**
+     * adds a new method to be seen by the user
+     * @param name the name of the method
+     * @param variables variables needed to run the method
+     * @param body the body of the method
+     */
     public void addMethod(String name, List<String> variables, String body) {
         Text methodBody = new Text(body);
         methodBody.setWrappingWidth(SPACING);
@@ -30,13 +37,9 @@ public class LibraryView extends InformationView {
         }
         v = " [ " + v + " ]";
         body = " [ " + body + " ]";
-        System.out.println("VARIABLES");
-        System.out.println(v);
-        System.out.println("in library");
         Text methodName = new Text(name + v);
         methodName.setWrappingWidth(250);
         methodBody.setWrappingWidth(250);
-
         VBox names = new VBox();
         VBox bodies = new VBox();
         names.getStyleClass().add(STYLE);
@@ -44,12 +47,6 @@ public class LibraryView extends InformationView {
         names.getChildren().add(methodName);
         bodies.getChildren().add(methodBody);
         HBox entry = new Library(  "to "+name + " " +v + body);
-        entry.setOnDragDetected(e-> {
-            Dragboard db = entry.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(((Library)entry).getText());
-            db.setContent(content);
-        });
         entry.getChildren().add(names);
         entry.getChildren().add(bodies);
         entry.getStyleClass().add(STYLE);

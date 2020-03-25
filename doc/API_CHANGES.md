@@ -11,3 +11,4 @@ running through the stacks that contain user input command info. Additionally, e
 public methods than intended, mostly for providing more information that needed to be provided to the user in the UI such as 
 variable names and values as well as method bodies. Specific UI portions also have unique public methods to update their contents
 such as a public update history method to keep track of old user inputs or sending and receiving error methods.
+

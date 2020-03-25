@@ -31,6 +31,11 @@ public class VariableView extends InformationView {
         myVariablesObjects = new ArrayList<>();
         Map = new HashMap<>();
     }
+
+    /**
+     * adds a new variable to be seen and manipulated by the user
+     * @param variables the entire list of variables
+     */
     public void addVariable(List<Variable> variables) {
         myVariablesObjects = new ArrayList<>();
         for (int i = 0; i < variables.size(); i ++) {
@@ -56,6 +61,12 @@ public class VariableView extends InformationView {
             createAndAddEntry(variableNames, variableVals);
         }
     }
+
+    /**
+     * creates a new entry to be seen by the user
+     * @param names the names of the variables
+     * @param vals the values of the variables
+     */
     private void createAndAddEntry(Node names, Node vals) {
         HBox entry = new HBox();
         entry.getChildren().add(names);
@@ -74,9 +85,14 @@ public class VariableView extends InformationView {
         header.getChildren().add(heading2);
     }
 
+    /**
+     * opens a textArea for the user to change a variable name or value
+     * @param text
+     * @param type string that represents if it is the name or the value
+     */
     private void handleTextPressed(Text text, String type){
         TextArea ta = new TextArea();
-        ta.setPromptText("Change " +type+ " Name");
+        ta.setPromptText("Change " +type);
         Stage s = new Stage();
         s.show();
         s.setScene(new Scene(ta));
@@ -88,18 +104,36 @@ public class VariableView extends InformationView {
             }
         });
     }
-    public boolean isChangedVariables(){
+
+    /**
+     *
+     * @return booleen that states if variables have been changed or not
+     */
+    public boolean changedVariables(){
         return changedVariables;
     }
+
+    /**
+     * resets the boolean back to false meaning that the change has been handled
+     */
     public void setChangedVariablesFalse(){
         changedVariables = false;
     }
+
 
     public void updateLanguage(ResourceBundle resources) {
         this.resources = resources;
         header.getChildren().clear();
         setHeader();
     }
+
+    /**
+     * hides the textarea and makes the apprpriate changes to the variableview
+     * @param s the stage that holds the textarea
+     * @param ta the textarea object
+     * @param text
+     * @param type String that reps if it was a name change or value change
+     */
     private void hideAndChangeText(Stage s, TextArea ta, Text text, String type){
         s.hide();
         if(!ta.getText().equals("")){
@@ -109,6 +143,13 @@ public class VariableView extends InformationView {
             updateMap(type,newtext,((VariableText)text).getIndex());
         }
     }
+
+    /**
+     * updates the map that stores the name of the variable and it's index
+     * @param type string that reps if it was a value change or a name change
+     * @param text the text writen in the textarea
+     * @param index the index of the variable
+     */
     private void updateMap(String type, String text,int index){
         Variable variable = myVariablesObjects.get(index);
         switch (type){

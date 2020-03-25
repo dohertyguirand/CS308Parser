@@ -80,6 +80,12 @@ public class Parser {
     private boolean validateMessage() {
         return false;
     }
+
+    /**
+     * splits the commands by the tell command  so that the parser runs on the appropiate turtlemodels
+     * @param commands string of user given commands
+     * @param turtlemodelcontainer the TurtleModelContainer that stores all of the turtlemodels
+     */
     private void splitAndParseText(String commands, TurtleModelContainer turtlemodelcontainer) {
         boolean firstOne = true;
         List<String> splitByTell = new ArrayList<>(Arrays.asList(commands.split("tell")));

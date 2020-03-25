@@ -60,9 +60,12 @@ public class Controller {
 
     }
 
-    public void update() {
 
-        if (variableView.isChangedVariables()) {
+    /**
+     * updates the variable model if the user changes the variables through code
+     */
+    public void updateVariables(){
+        if (variableView.changedVariables()) {
             List<Variable> viewVariables = variableView.getVariables();
             for(int i = 0; i < viewVariables.size(); i++){
                 Variable variable = viewVariables.get(i);
@@ -73,12 +76,23 @@ public class Controller {
             }
             variableView.setChangedVariablesFalse();
         }
+    }
 
+    /**
+     * updates the background color is the user changes the color through code
+     */
+    public void updateColor(){
         if(turtleContainer.getTurtleModelContainer().getActiveTurtles().get(0).getIsColorChanged()){
             List<Double> colorVals = turtleContainer.getTurtleModelContainer().getActiveTurtles().get(0).getBackgroundColor();
             turtleWindow.setColor(new Color(colorVals.get(0)/255, colorVals.get(1)/255, colorVals.get(2)/255, 1));
             allModels.getTurtleModelContainer().getActiveTurtles().get(0).setColorChanged(false);
         }
+    }
+
+    public void update() {
+        updateVariables();
+        updateColor();
+
         
         for(int t = 1; t <= turtleContainer.getTurtleModelContainer().getTurtleModels().size(); t++){
             TurtleModel turtleModel = turtleContainer.getTurtleModelContainer().getTurleModel(t);
